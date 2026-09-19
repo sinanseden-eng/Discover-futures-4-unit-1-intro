@@ -759,7 +759,18 @@
             const nextStage = () => goTo(stage + 1);
             const previousStage = () => goTo(stage - 1);
             const skipStage = () => goTo(stage + 1);
-            const handleSelect = (id, index) => { if (!predictionsLocked) setAnswers(Object.assign({}, answers, { [id]: index })); };
+            const handleSelect = (id, index) => {
+                if (predictionsLocked) return;
+                setAnswers((current) => {
+                    const next = Object.assign({}, current);
+                    if (next[id] === index) {
+                        delete next[id];
+                    } else {
+                        next[id] = index;
+                    }
+                    return next;
+                });
+            };
             const lockPredictions = () => { setPredictionsLocked(true); goTo(2); };
             const unlockFactflixAnswers = (event) => {
                 event.preventDefault();
@@ -811,7 +822,7 @@
                         <header className="mb-8 border-b border-zinc-800 pb-6">
                             <p className="text-violet-300 font-bold uppercase tracking-widest text-xs">Prediction round</p>
                             <h2 className="text-4xl font-display font-black mt-2">The Music in Our Lives</h2>
-                            <p className="text-zinc-400 mt-2 text-lg">Work in pairs. Choose answers, but do not check them yet—the video is your evidence.</p>
+                            <p className="text-zinc-400 mt-2 text-lg">Work in pairs. Choose answers, but do not check them yet—the video is your evidence. Click a selected option again to remove it.</p>
                         </header>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             {quizData.map((q) => (
