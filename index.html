@@ -450,6 +450,10 @@
                     </div>
                     <p className="mt-2 text-center text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-500">{stage + 1} of 6 · {labels[stage]}</p>
                     <p className="mt-1 text-center text-[11px] text-emerald-400/80">Answers save automatically on this device and browser.</p>
+                    <details className="mx-auto mt-2 max-w-2xl rounded-xl border border-amber-700/40 bg-amber-950/30 px-3 py-2 text-left text-[11px] text-amber-100">
+                        <summary className="cursor-pointer text-center font-bold text-amber-300">Keeping your saved answers safe</summary>
+                        <p className="mt-2 leading-5">Return on the same iPad, browser and browser profile. Do not clear this browser’s cache, cookies or website data, and do not use private browsing. If an answer is especially important, take a screenshot and save it in Notability as a backup.</p>
+                    </details>
                 </div>
             );
         };
@@ -618,7 +622,10 @@
                             <label className="block text-sm font-bold text-zinc-300">Optional: However, the same music may affect people differently because...<textarea value={different} onChange={(e) => setDifferent(e.target.value)} className="mt-2 min-h-[70px] w-full rounded-2xl border border-zinc-700 bg-black/40 p-4 text-white" /></label>
                         </div>
                         <p className="mt-6 rounded-2xl border border-zinc-700 bg-black/30 p-5 text-zinc-300">A strong response contains a clear idea and specific support. Opinion is the opening act; evidence is the headline performer.</p>
-                        <p className="mt-4 text-center text-sm text-emerald-300">✓ Your exit-ticket answers are saved automatically in this browser.</p><div className="mt-8 text-center"><button onClick={onRestart} className="rounded-full bg-gradient-to-r from-violet-600 to-pink-600 px-10 py-4 font-bold">Start Again & Clear Saved Work</button></div>
+                        <div className="mt-6 rounded-2xl border border-amber-500/40 bg-amber-950/30 p-5 text-sm text-amber-100">
+                            <p className="font-black uppercase tracking-wider text-amber-300">Important: keep a backup</p>
+                            <p className="mt-2 leading-6">Your exit-ticket answers are saved automatically only in this browser. Return using the same iPad, browser and browser profile. Do not erase the browser’s cache, cookies or website data, as this may remove your saved work. If your answers are especially important, take screenshots and save them in Notability.</p>
+                        </div><div className="mt-8 text-center"><button onClick={onRestart} className="rounded-full bg-gradient-to-r from-violet-600 to-pink-600 px-10 py-4 font-bold">Start Again & Clear Saved Work</button></div>
                     </div>
                 </div>
             );
