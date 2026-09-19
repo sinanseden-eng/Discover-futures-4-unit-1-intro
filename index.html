@@ -132,6 +132,41 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
+        const STORAGE_PREFIX = 'df4-unit1-intro:v1:';
+
+        const usePersistentState = (name, initialValue) => {
+            const key = STORAGE_PREFIX + name;
+            const [value, setValue] = useState(() => {
+                try {
+                    const saved = window.localStorage.getItem(key);
+                    return saved === null ? initialValue : JSON.parse(saved);
+                } catch (error) {
+                    return initialValue;
+                }
+            });
+
+            useEffect(() => {
+                try {
+                    window.localStorage.setItem(key, JSON.stringify(value));
+                } catch (error) {
+                    // The lesson still works when browser storage is unavailable.
+                }
+            }, [key, value]);
+
+            return [value, setValue];
+        };
+
+        const clearSavedLesson = () => {
+            try {
+                Object.keys(window.localStorage)
+                    .filter((key) => key.startsWith(STORAGE_PREFIX))
+                    .forEach((key) => window.localStorage.removeItem(key));
+            } catch (error) {
+                // Ignore storage restrictions; in-memory state will still reset.
+            }
+        };
+
+
         const ScratchCard = ({ artist }) => {
             const canvasRef = useRef(null);
             const [isDrawing, setIsDrawing] = useState(false);
@@ -414,15 +449,16 @@
                         <button onClick={onSkip} disabled={stage === 5} className="rounded-full border border-zinc-700 px-3 py-2 text-xs font-bold text-zinc-400 disabled:opacity-30">Teacher skip →</button>
                     </div>
                     <p className="mt-2 text-center text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-500">{stage + 1} of 6 · {labels[stage]}</p>
+                    <p className="mt-1 text-center text-[11px] text-emerald-400/80">Answers save automatically on this device and browser.</p>
                 </div>
             );
         };
 
         const EmotionLab = ({ onNext, onBack, onSkip }) => {
-            const [evidenceA, setEvidenceA] = useState('');
-            const [evidenceB, setEvidenceB] = useState('');
-            const [position, setPosition] = useState('Both interact');
-            const [reason, setReason] = useState('');
+            const [evidenceA, setEvidenceA] = usePersistentState('reading-evidence-a', '');
+            const [evidenceB, setEvidenceB] = usePersistentState('reading-evidence-b', '');
+            const [position, setPosition] = usePersistentState('reading-position', 'Both interact');
+            const [reason, setReason] = usePersistentState('reading-reason', '');
             const positions = [
                 ['The sound matters more','🎼'],
                 ['The listener matters more','🧠'],
@@ -567,9 +603,9 @@
         };
 
         const ReflectionStage = ({ onBack, onRestart }) => {
-            const [claim, setClaim] = useState('');
-            const [evidence, setEvidence] = useState('');
-            const [different, setDifferent] = useState('');
+            const [claim, setClaim] = usePersistentState('exit-claim', '');
+            const [evidence, setEvidence] = usePersistentState('exit-evidence', '');
+            const [different, setDifferent] = usePersistentState('exit-different', '');
             return (
                 <div className="min-h-screen p-4 md:p-8 pb-24">
                     <ProgressDock stage={5} onBack={onBack} onSkip={() => {}} />
@@ -582,18 +618,18 @@
                             <label className="block text-sm font-bold text-zinc-300">Optional: However, the same music may affect people differently because...<textarea value={different} onChange={(e) => setDifferent(e.target.value)} className="mt-2 min-h-[70px] w-full rounded-2xl border border-zinc-700 bg-black/40 p-4 text-white" /></label>
                         </div>
                         <p className="mt-6 rounded-2xl border border-zinc-700 bg-black/30 p-5 text-zinc-300">A strong response contains a clear idea and specific support. Opinion is the opening act; evidence is the headline performer.</p>
-                        <div className="mt-8 text-center"><button onClick={onRestart} className="rounded-full bg-gradient-to-r from-violet-600 to-pink-600 px-10 py-4 font-bold">Start Again</button></div>
+                        <p className="mt-4 text-center text-sm text-emerald-300">✓ Your exit-ticket answers are saved automatically in this browser.</p><div className="mt-8 text-center"><button onClick={onRestart} className="rounded-full bg-gradient-to-r from-violet-600 to-pink-600 px-10 py-4 font-bold">Start Again & Clear Saved Work</button></div>
                     </div>
                 </div>
             );
         };
 
         const App = () => {
-            const [isUnlocked, setIsUnlocked] = useState(false);
-            const [stage, setStage] = useState(0);
-            const [answers, setAnswers] = useState({});
-            const [predictionsLocked, setPredictionsLocked] = useState(false);
-            const [factflixChecked, setFactflixChecked] = useState(false);
+            const [isUnlocked, setIsUnlocked] = usePersistentState('unlocked', false);
+            const [stage, setStage] = usePersistentState('stage', 0);
+            const [answers, setAnswers] = usePersistentState('prediction-answers', {});
+            const [predictionsLocked, setPredictionsLocked] = usePersistentState('predictions-locked', false);
+            const [factflixChecked, setFactflixChecked] = usePersistentState('factflix-checked', false);
 
             const goTo = (next) => { setStage(Math.max(0, Math.min(5, next))); window.scrollTo({ top: 0, behavior: 'smooth' }); };
             const nextStage = () => goTo(stage + 1);
@@ -601,7 +637,17 @@
             const skipStage = () => goTo(stage + 1);
             const handleSelect = (id, index) => { if (!predictionsLocked) setAnswers(Object.assign({}, answers, { [id]: index })); };
             const lockPredictions = () => { setPredictionsLocked(true); goTo(2); };
-            const restart = () => { setStage(0); setAnswers({}); setPredictionsLocked(false); setFactflixChecked(false); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+            const restart = () => {
+                const confirmed = window.confirm('Start again and permanently clear the answers saved in this browser?');
+                if (!confirmed) return;
+                clearSavedLesson();
+                setIsUnlocked(false);
+                setStage(0);
+                setAnswers({});
+                setPredictionsLocked(false);
+                setFactflixChecked(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
 
             if (!isUnlocked) return <RiddleGate onSolve={() => setIsUnlocked(true)} />;
 
