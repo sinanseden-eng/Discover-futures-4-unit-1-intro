@@ -396,7 +396,7 @@
         };
 
         const ProgressDock = ({ stage, onBack, onSkip }) => {
-            const labels = ['Intro', 'Predict', 'Watch', 'Investigate', 'Reveal', 'Reflect'];
+            const labels = ['Intro', 'Predict', 'Watch', 'Read & Decide', 'Reveal', 'Reflect'];
             return (
                 <div className="sticky top-3 z-40 mb-8 max-w-6xl mx-auto rounded-2xl border border-zinc-700 bg-zinc-950/90 px-3 py-3 shadow-xl backdrop-blur-xl">
                     <div className="flex items-center justify-between gap-3">
@@ -419,20 +419,14 @@
         };
 
         const EmotionLab = ({ onNext, onBack, onSkip }) => {
-            const [mood, setMood] = useState('calm');
-            const [genre, setGenre] = useState('');
-            const [source, setSource] = useState('');
-            const [evidence, setEvidence] = useState('');
-            const [example, setExample] = useState('');
-            const moods = [
-                ['Calm','🌙'], ['Happy','☀️'], ['Focused','🎯'],
-                ['Energetic','⚡'], ['Nostalgic','📼'], ['Tense','🌀']
-            ];
-            const searches = [
-                ['Tempo & emotion','site:frontiersin.org music tempo emotion research','⏱️'],
-                ['Pitch & feeling','site:nih.gov music pitch emotion','🎵'],
-                ['Lyrics & memory','site:edu song lyrics music memory emotion research','💭'],
-                ['Music & the brain','site:nccih.nih.gov music brain emotion','🧠']
+            const [evidenceA, setEvidenceA] = useState('');
+            const [evidenceB, setEvidenceB] = useState('');
+            const [position, setPosition] = useState('Both interact');
+            const [reason, setReason] = useState('');
+            const positions = [
+                ['The sound matters more','🎼'],
+                ['The listener matters more','🧠'],
+                ['Both interact','⚖️']
             ];
             return (
                 <div className="min-h-screen p-4 md:p-8 pb-24">
@@ -440,50 +434,98 @@
                     <div className="max-w-6xl mx-auto fade-in">
                         <header className="text-center mb-8">
                             <p className="text-pink-400 font-bold tracking-[0.25em] uppercase text-sm">Discover More · Student Book page 6</p>
-                            <h2 className="text-5xl md:text-6xl font-display font-black mt-3">Soundtrack <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-400">Scientists</span></h2>
-                            <p className="text-zinc-300 text-lg max-w-3xl mx-auto mt-4">Find one piece of evidence and build one careful claim about music and emotion.</p>
+                            <h2 className="text-5xl md:text-6xl font-display font-black mt-3">Two Views, <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-400">One Question</span></h2>
+                            <p className="text-zinc-300 text-lg max-w-3xl mx-auto mt-4">Read two short B2 texts. Compare their evidence and decide what you think.</p>
                         </header>
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                            <section className="lg:col-span-2 bg-gradient-to-br from-violet-900/50 via-zinc-900 to-pink-900/30 border border-violet-500/40 rounded-3xl p-6">
-                                <h3 className="text-2xl font-display font-black">🔬 Four-minute research sprint</h3>
-                                <p className="text-zinc-400 mt-1">One source · one finding · one claim</p>
-                                <p className="text-lg text-white my-5"><strong className="text-pink-400">Big question:</strong> Why do different types of music influence how we feel?</p>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    {searches.map((item) => (
-                                        <a key={item[0]} href={'https://www.google.com/search?q=' + encodeURIComponent(item[1])} target="_blank" rel="noreferrer" className="bg-zinc-800/80 border border-zinc-700 hover:border-cyan-400 rounded-2xl p-4 transition">
-                                            <span className="text-2xl mr-2">{item[2]}</span><strong>{item[0]}</strong>
-                                            <span className="block text-xs text-zinc-500 mt-2">Search trusted research sources →</span>
-                                        </a>
-                                    ))}
-                                </div>
-                                <p className="text-sm text-zinc-400 mt-5">Use a university, government health organisation or research journal. Explain the idea in your own words.</p>
-                            </section>
-                            <section className="bg-zinc-900/80 border border-zinc-800 rounded-3xl p-6">
-                                <p className="text-cyan-300 font-bold uppercase tracking-widest text-xs">Mood dial</p>
-                                <h3 className="text-2xl font-display font-black mt-2">Choose a feeling</h3>
-                                <p className="text-zinc-400 text-sm my-4">Use may, might or can—not an absolute claim.</p>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {moods.map((item) => (
-                                        <button key={item[0]} onClick={() => setMood(item[0].toLowerCase())} className={'p-3 rounded-xl border text-left ' + (mood === item[0].toLowerCase() ? 'border-cyan-300 bg-cyan-950 text-white' : 'border-zinc-700 bg-zinc-800/60 text-zinc-300')}>
-                                            <span className="text-xl">{item[1]}</span><span className="block text-sm font-bold">{item[0]}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            </section>
-                        </div>
-                        <section className="bg-zinc-900/80 border border-zinc-800 rounded-3xl p-6">
-                            <p className="text-violet-300 font-bold uppercase tracking-widest text-xs">Team evidence board</p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-                                <label className="text-sm text-zinc-400">Music or genre<input value={genre} onChange={(e) => setGenre(e.target.value)} placeholder="classical music" className="mt-2 w-full rounded-xl border border-zinc-700 bg-black/40 px-4 py-3 text-white" /></label>
-                                <label className="text-sm text-zinc-400">Source<input value={source} onChange={(e) => setSource(e.target.value)} placeholder="organisation/article" className="mt-2 w-full rounded-xl border border-zinc-700 bg-black/40 px-4 py-3 text-white" /></label>
-                                <label className="text-sm text-zinc-400">One finding<input value={evidence} onChange={(e) => setEvidence(e.target.value)} placeholder="a slower tempo..." className="mt-2 w-full rounded-xl border border-zinc-700 bg-black/40 px-4 py-3 text-white" /></label>
-                                <label className="text-sm text-zinc-400">Example<input value={example} onChange={(e) => setExample(e.target.value)} placeholder="song/situation" className="mt-2 w-full rounded-xl border border-zinc-700 bg-black/40 px-4 py-3 text-white" /></label>
-                            </div>
-                            <div className="mt-5 bg-gradient-to-r from-cyan-950/70 to-violet-950/70 border border-cyan-500/30 rounded-2xl p-5 text-lg">
-                                According to <strong className="text-violet-300">{source || '[source]'}</strong>, <strong className="text-yellow-300">{evidence || '[finding]'}</strong>. Therefore, <strong className="text-cyan-300">{genre || '[music or genre]'}</strong> may make people feel <strong className="text-pink-300">{mood}</strong>. For example, <strong className="text-emerald-300">{example || '[example]'}</strong>.
-                            </div>
-                            <p className="text-sm text-zinc-500 mt-4">Share with one nearby team. They may challenge the claim or add another reaction.</p>
+
+                        <section className="mb-6 rounded-3xl border border-violet-500/40 bg-gradient-to-r from-violet-950/80 to-pink-950/60 p-6">
+                            <h3 className="text-2xl font-display font-black">📖 Eight-minute evidence challenge</h3>
+                            <p className="mt-2 text-lg"><strong className="text-pink-300">Big question:</strong> Why do different types of music influence how we feel?</p>
+                            <ol className="mt-4 grid gap-3 text-zinc-300 md:grid-cols-4">
+                                <li className="rounded-2xl bg-black/30 p-4"><strong className="text-cyan-300">1 · Read</strong><br />Start with one document.</li>
+                                <li className="rounded-2xl bg-black/30 p-4"><strong className="text-cyan-300">2 · Explain</strong><br />Tell your partner its main idea.</li>
+                                <li className="rounded-2xl bg-black/30 p-4"><strong className="text-cyan-300">3 · Compare</strong><br />Read the other view.</li>
+                                <li className="rounded-2xl bg-black/30 p-4"><strong className="text-cyan-300">4 · Decide</strong><br />Form a supported opinion.</li>
+                            </ol>
                         </section>
+
+                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                            <article className="rounded-3xl border border-cyan-500/40 bg-gradient-to-br from-cyan-950/50 via-zinc-900 to-zinc-950 p-6 md:p-7">
+                                <div className="flex items-center justify-between gap-3">
+                                    <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-300">Document A · The music-centred view</p>
+                                    <span className="rounded-full bg-cyan-950 px-3 py-1 text-xs font-bold text-cyan-200">about 150 words</span>
+                                </div>
+                                <h3 className="mt-3 text-3xl font-display font-black">The Sound Shapes the Feeling</h3>
+                                <div className="mt-5 space-y-4 text-[17px] leading-8 text-zinc-200">
+                                    <p>Music has physical features that can influence how the body and brain respond. Tempo is one example. Fast, regular beats may increase alertness and make movement feel easier, while slower music can support calm breathing. Pitch and volume also matter. High or rising sounds are often heard as bright or exciting, whereas low, sudden or dissonant sounds may create tension. Film composers use these patterns to guide an audience before a character even speaks.</p>
+                                    <p>This does not mean that a song controls everybody in exactly the same way. However, musical structure gives listeners emotional signals. A steady rhythm can support exercise, and predictable, gentle music may help concentration or relaxation. From this perspective, music influences feelings mainly because tempo, rhythm, pitch and intensity affect attention and energy. The sound itself leads the emotional response, even if individual reactions are not identical.</p>
+                                </div>
+                                <div className="mt-5 rounded-2xl border border-cyan-700/50 bg-black/30 p-4">
+                                    <p className="text-sm font-bold text-cyan-300">Central claim</p>
+                                    <p className="mt-1 text-sm text-zinc-300">The structure of music sends emotional signals that can influence attention, energy and mood.</p>
+                                </div>
+                            </article>
+
+                            <article className="rounded-3xl border border-pink-500/40 bg-gradient-to-br from-pink-950/50 via-zinc-900 to-zinc-950 p-6 md:p-7">
+                                <div className="flex items-center justify-between gap-3">
+                                    <p className="text-xs font-black uppercase tracking-[0.2em] text-pink-300">Document B · The listener-centred view</p>
+                                    <span className="rounded-full bg-pink-950 px-3 py-1 text-xs font-bold text-pink-200">about 150 words</span>
+                                </div>
+                                <h3 className="mt-3 text-3xl font-display font-black">The Listener Creates the Meaning</h3>
+                                <div className="mt-5 space-y-4 text-[17px] leading-8 text-zinc-200">
+                                    <p>Music does not act like an emotional command. Listeners bring memories, cultural knowledge and personal preferences to every song. A slow song may feel peaceful to one person but deeply sad to another. An energetic track may motivate someone during exercise, yet annoy a listener who dislikes that style. Lyrics can also change a reaction because people connect words with particular experiences.</p>
+                                    <p>Context matters as well. The same song may feel exciting at a concert, distracting during homework and comforting when heard years later. Familiar music can produce nostalgia because it is connected with people, places or important moments. From this perspective, emotion is created through an interaction between sound and the listener’s life. Musical features matter, but they do not carry one fixed message. People interpret music, so background, memory and situation may be as influential as tempo or pitch.</p>
+                                </div>
+                                <div className="mt-5 rounded-2xl border border-pink-700/50 bg-black/30 p-4">
+                                    <p className="text-sm font-bold text-pink-300">Central claim</p>
+                                    <p className="mt-1 text-sm text-zinc-300">A listener’s memories, culture, preferences and situation shape the emotional meaning of music.</p>
+                                </div>
+                            </article>
+                        </div>
+
+                        <details className="mt-6 rounded-2xl border border-zinc-700 bg-zinc-900/80 p-5">
+                            <summary className="cursor-pointer font-bold text-violet-300">Vocabulary support</summary>
+                            <div className="mt-4 grid gap-3 text-sm text-zinc-300 sm:grid-cols-2 lg:grid-cols-4">
+                                <p><strong className="text-white">alertness:</strong> being awake and ready to react</p>
+                                <p><strong className="text-white">dissonant:</strong> containing sounds that create tension</p>
+                                <p><strong className="text-white">nostalgia:</strong> emotion connected with memories of the past</p>
+                                <p><strong className="text-white">interpret:</strong> understand something in a particular way</p>
+                            </div>
+                        </details>
+
+                        <section className="mt-6 rounded-3xl border border-zinc-700 bg-zinc-900/80 p-6">
+                            <p className="text-violet-300 font-bold uppercase tracking-widest text-xs">Compare the evidence</p>
+                            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <label className="text-sm text-zinc-400">One convincing idea from Document A
+                                    <textarea value={evidenceA} onChange={(e) => setEvidenceA(e.target.value)} placeholder="Musical features may..." className="mt-2 min-h-[90px] w-full rounded-2xl border border-cyan-800 bg-black/40 p-4 text-white" />
+                                </label>
+                                <label className="text-sm text-zinc-400">One convincing idea from Document B
+                                    <textarea value={evidenceB} onChange={(e) => setEvidenceB(e.target.value)} placeholder="Listeners may react differently because..." className="mt-2 min-h-[90px] w-full rounded-2xl border border-pink-800 bg-black/40 p-4 text-white" />
+                                </label>
+                            </div>
+                        </section>
+
+                        <section className="mt-6 rounded-3xl border border-zinc-700 bg-zinc-900/80 p-6">
+                            <p className="text-emerald-300 font-bold uppercase tracking-widest text-xs">Take a position</p>
+                            <h3 className="mt-2 text-2xl font-display font-black">Which explanation is more convincing?</h3>
+                            <div className="mt-4 grid gap-3 md:grid-cols-3">
+                                {positions.map((item) => (
+                                    <button key={item[0]} onClick={() => setPosition(item[0])} className={'rounded-2xl border p-4 text-left transition ' + (position === item[0] ? 'border-emerald-300 bg-emerald-950/70 text-white' : 'border-zinc-700 bg-black/30 text-zinc-300 hover:border-zinc-500')}>
+                                        <span className="text-2xl">{item[1]}</span>
+                                        <span className="mt-2 block font-bold">{item[0]}</span>
+                                    </button>
+                                ))}
+                            </div>
+                            <label className="mt-5 block text-sm text-zinc-400">Explain your position with evidence from the texts or your experience.
+                                <textarea value={reason} onChange={(e) => setReason(e.target.value)} placeholder="I think... because Document... explains that..." className="mt-2 min-h-[100px] w-full rounded-2xl border border-zinc-700 bg-black/40 p-4 text-white" />
+                            </label>
+                            <div className="mt-5 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-950/60 to-cyan-950/50 p-5 text-lg">
+                                <p className="text-xs font-black uppercase tracking-widest text-emerald-300">Your developing opinion</p>
+                                <p className="mt-2"><strong>{position}.</strong> {reason || 'Add a reason and refer to at least one idea from the documents.'}</p>
+                            </div>
+                            <p className="mt-4 text-sm text-zinc-500">These are balanced classroom texts written for this lesson. They summarise common perspectives and do not claim that every listener responds in the same way.</p>
+                        </section>
+
                         <div className="mt-8 text-center"><button onClick={onNext} className="bg-pink-600 hover:bg-pink-500 text-white px-10 py-4 rounded-full font-bold text-lg">Next: Artist Scratch Cards →</button></div>
                     </div>
                 </div>
