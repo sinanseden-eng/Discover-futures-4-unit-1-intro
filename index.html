@@ -231,48 +231,12 @@
         };
 
         const artistsData = [
-            {
-                id: 1,
-                clue: "In 2018, over two million fans attended her live concerts in the USA alone.",
-                name: "Taylor Swift",
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_%283%29.png",
-                fact: "We'll read about her touring success on Page 5!"
-            },
-            {
-                id: 2,
-                clue: "He made a staggering $432 million from music tours worldwide in a single year.",
-                name: "Ed Sheeran",
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Ed_Sheeran-6886_%28cropped%29.jpg",
-                fact: "Live music and touring is becoming the future of the industry (Page 5)."
-            },
-            {
-                id: 3,
-                clue: "His 5th Symphony was sent into outer space on the Voyager 1 probe in 1977.",
-                name: "Beethoven",
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Beethoven.jpg",
-                fact: "His music was chosen to represent Earth to aliens (Page 7)!"
-            },
-            {
-                id: 4,
-                clue: "His 1950s rock song 'Johnny B. Goode' was also included on the Golden Record sent into space.",
-                name: "Chuck Berry",
-                imageUrl: "https://hips.hearstapps.com/hmg-prod/images/gettyimages-74254327.jpg",
-                fact: "The Voyager 1 Golden Record features his iconic guitar riff!"
-            },
-            {
-                id: 5,
-                clue: "A child prodigy who started composing at age five, he is one of the most famous classical musicians ever.",
-                name: "W. A. Mozart",
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Wolfgang-amadeus-mozart_1.jpg",
-                fact: "Classical music has been shown to lower heart rates and reduce stress."
-            },
-            {
-                id: 6,
-                clue: "She recorded her Grammy-winning debut album entirely in her brother's small bedroom.",
-                name: "Billie Eilish",
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Billie_Eilish_2019_by_Glenn_Francis_%28cropped%29_2.jpg",
-                fact: "She represents the new trend of 'bedroom pop' enabled by modern digital tech!"
-            }
+            { id: 1, clue: "In 2018, over two million fans attended her live concerts in the USA alone.", name: "Taylor Swift", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_%283%29.png", fact: "Her touring success appears on Student Book page 8.", connection: "Live concerts, touring and the changing music industry.", bonus: false },
+            { id: 2, clue: "He made a staggering $432 million from music tours worldwide in a single year.", name: "Ed Sheeran", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Ed_Sheeran-6886_%28cropped%29.jpg", fact: "His touring income appears on Student Book page 8.", connection: "Live music, touring income and future music trends.", bonus: false },
+            { id: 3, clue: "His 5th Symphony was sent into outer space on the Voyager 1 probe in 1977.", name: "Beethoven", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Beethoven.jpg", fact: "His music appears in the Golden Record reading on Student Book page 7.", connection: "The Golden Record and music as a message from Earth.", bonus: false },
+            { id: 4, clue: "His 1950s rock song 'Johnny B. Goode' was included on the Golden Record sent into space.", name: "Chuck Berry", imageUrl: "https://hips.hearstapps.com/hmg-prod/images/gettyimages-74254327.jpg", fact: "His song appears in the Golden Record reading on Student Book page 7.", connection: "The Golden Record, musical genres and cultural representation.", bonus: false },
+            { id: 5, clue: "A child prodigy who started composing at age five, he became one of the most famous classical musicians.", name: "W. A. Mozart", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Wolfgang-amadeus-mozart_1.jpg", fact: "A bonus connection to classical music and emotional responses.", connection: "Classical music and the effects of music on mood.", bonus: true },
+            { id: 6, clue: "She recorded her Grammy-winning debut album in her brother's small bedroom.", name: "Billie Eilish", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Billie_Eilish_2019_by_Glenn_Francis_%28cropped%29_2.jpg", fact: "A bonus connection to bedroom pop and modern music technology.", connection: "Digital production and new ways of creating music.", bonus: true }
         ];
 
         const quizData = [
@@ -431,144 +395,152 @@
             );
         };
 
-        const EmotionLab = ({ onNext }) => {
-            const [mood, setMood] = useState('curious');
-            const [genre, setGenre] = useState('');
-            const [evidence, setEvidence] = useState('');
-            const [song, setSong] = useState('');
-
-            const moods = [
-                { name: 'Calm', icon: '🌙', colour: 'from-cyan-600/40 to-blue-900/40' },
-                { name: 'Happy', icon: '☀️', colour: 'from-yellow-500/40 to-orange-900/40' },
-                { name: 'Focused', icon: '🎯', colour: 'from-emerald-600/40 to-teal-900/40' },
-                { name: 'Energetic', icon: '⚡', colour: 'from-pink-600/40 to-rose-900/40' },
-                { name: 'Nostalgic', icon: '📼', colour: 'from-violet-600/40 to-purple-900/40' },
-                { name: 'Tense', icon: '🌀', colour: 'from-red-600/40 to-slate-900/40' }
-            ];
-
-            const searches = [
-                { label: 'Tempo & emotion', query: 'how tempo affects emotions in music', icon: '⏱️' },
-                { label: 'Pitch & feeling', query: 'how pitch affects emotions in music', icon: '🎵' },
-                { label: 'Lyrics & memory', query: 'how song lyrics affect emotions and memory', icon: '💭' },
-                { label: 'Music & the brain', query: 'why does music affect our emotions psychology', icon: '🧠' }
-            ];
-
+        const ProgressDock = ({ stage, onBack, onSkip }) => {
+            const labels = ['Intro', 'Predict', 'Watch', 'Investigate', 'Reveal', 'Reflect'];
             return (
-                <div className="min-h-screen p-6 md:p-12 pb-24">
-                    <div className="max-w-6xl mx-auto fade-in">
-                        <header className="text-center mb-10">
-                            <p className="text-pink-400 font-bold tracking-[0.25em] uppercase text-sm">Discover More · Page 6</p>
-                            <h2 className="text-5xl md:text-6xl font-display font-black mt-3">
-                                Soundtrack <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-400">Scientists</span>
-                            </h2>
-                            <p className="text-zinc-300 text-lg max-w-3xl mx-auto mt-4">
-                                Music can change the atmosphere of a room, but does the same song affect everybody in the same way?
-                                Your team will investigate the science behind the feeling.
-                            </p>
-                        </header>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                            <div className="lg:col-span-2 bg-gradient-to-br from-violet-900/50 via-zinc-900 to-pink-900/30 border border-violet-500/40 rounded-3xl p-6 md:p-8 shadow-2xl">
-                                <div className="flex items-center gap-3 mb-5">
-                                    <span className="text-4xl">🔬</span>
-                                    <div>
-                                        <h3 className="text-2xl font-display font-black">Your research mission</h3>
-                                        <p className="text-zinc-400">Research sprint: find one useful explanation in five minutes.</p>
-                                    </div>
+                <div className="sticky top-3 z-40 mb-8 max-w-6xl mx-auto rounded-2xl border border-zinc-700 bg-zinc-950/90 px-3 py-3 shadow-xl backdrop-blur-xl">
+                    <div className="flex items-center justify-between gap-3">
+                        <button onClick={onBack} disabled={stage === 0} className="rounded-full border border-zinc-700 px-3 py-2 text-xs font-bold text-zinc-300 disabled:opacity-30">← Back</button>
+                        <div className="flex flex-1 items-center justify-center gap-1">
+                            {labels.map((label, index) => (
+                                <div key={label} className="flex items-center">
+                                    <span className={'flex h-8 w-8 items-center justify-center rounded-full text-xs font-black ' + (index === stage ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white' : index < stage ? 'bg-emerald-900/70 text-emerald-300' : 'bg-zinc-800 text-zinc-500')} title={label}>
+                                        {index < stage ? '✓' : index + 1}
+                                    </span>
+                                    {index < labels.length - 1 && <span className={'mx-1 hidden h-px w-5 sm:block ' + (index < stage ? 'bg-emerald-600' : 'bg-zinc-700')}></span>}
                                 </div>
-                                <p className="text-lg text-white mb-5">
-                                    <span className="text-pink-400 font-black">Big question:</span>
-                                    {' '}Why do different types of music influence how we feel?
-                                </p>
+                            ))}
+                        </div>
+                        <button onClick={onSkip} disabled={stage === 5} className="rounded-full border border-zinc-700 px-3 py-2 text-xs font-bold text-zinc-400 disabled:opacity-30">Teacher skip →</button>
+                    </div>
+                    <p className="mt-2 text-center text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-500">{stage + 1} of 6 · {labels[stage]}</p>
+                </div>
+            );
+        };
+
+        const EmotionLab = ({ onNext, onBack, onSkip }) => {
+            const [mood, setMood] = useState('calm');
+            const [genre, setGenre] = useState('');
+            const [source, setSource] = useState('');
+            const [evidence, setEvidence] = useState('');
+            const [example, setExample] = useState('');
+            const moods = [
+                ['Calm','🌙'], ['Happy','☀️'], ['Focused','🎯'],
+                ['Energetic','⚡'], ['Nostalgic','📼'], ['Tense','🌀']
+            ];
+            const searches = [
+                ['Tempo & emotion','site:frontiersin.org music tempo emotion research','⏱️'],
+                ['Pitch & feeling','site:nih.gov music pitch emotion','🎵'],
+                ['Lyrics & memory','site:edu song lyrics music memory emotion research','💭'],
+                ['Music & the brain','site:nccih.nih.gov music brain emotion','🧠']
+            ];
+            return (
+                <div className="min-h-screen p-4 md:p-8 pb-24">
+                    <ProgressDock stage={3} onBack={onBack} onSkip={onSkip} />
+                    <div className="max-w-6xl mx-auto fade-in">
+                        <header className="text-center mb-8">
+                            <p className="text-pink-400 font-bold tracking-[0.25em] uppercase text-sm">Discover More · Student Book page 6</p>
+                            <h2 className="text-5xl md:text-6xl font-display font-black mt-3">Soundtrack <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-400">Scientists</span></h2>
+                            <p className="text-zinc-300 text-lg max-w-3xl mx-auto mt-4">Find one piece of evidence and build one careful claim about music and emotion.</p>
+                        </header>
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                            <section className="lg:col-span-2 bg-gradient-to-br from-violet-900/50 via-zinc-900 to-pink-900/30 border border-violet-500/40 rounded-3xl p-6">
+                                <h3 className="text-2xl font-display font-black">🔬 Four-minute research sprint</h3>
+                                <p className="text-zinc-400 mt-1">One source · one finding · one claim</p>
+                                <p className="text-lg text-white my-5"><strong className="text-pink-400">Big question:</strong> Why do different types of music influence how we feel?</p>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     {searches.map((item) => (
-                                        <a
-                                            key={item.label}
-                                            href={`https://www.google.com/search?q=${encodeURIComponent(item.query)}`}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="group bg-zinc-800/80 border border-zinc-700 hover:border-cyan-400 rounded-2xl p-4 transition-all hover:-translate-y-1"
-                                        >
-                                            <span className="text-2xl mr-2">{item.icon}</span>
-                                            <span className="font-bold text-white group-hover:text-cyan-300">{item.label}</span>
-                                            <span className="block text-xs text-zinc-500 mt-2">Open a search mission →</span>
+                                        <a key={item[0]} href={'https://www.google.com/search?q=' + encodeURIComponent(item[1])} target="_blank" rel="noreferrer" className="bg-zinc-800/80 border border-zinc-700 hover:border-cyan-400 rounded-2xl p-4 transition">
+                                            <span className="text-2xl mr-2">{item[2]}</span><strong>{item[0]}</strong>
+                                            <span className="block text-xs text-zinc-500 mt-2">Search trusted research sources →</span>
                                         </a>
                                     ))}
                                 </div>
-                                <p className="text-sm text-zinc-400 mt-5">
-                                    Research rule: use one reliable source and explain the idea in your own words.
-                                    Look for clues such as tempo, pitch, lyrics, volume, memories, and context.
-                                </p>
-                            </div>
-
-                            <div className="bg-zinc-900/80 border border-zinc-800 rounded-3xl p-6 shadow-xl">
-                                <p className="text-cyan-300 font-bold uppercase tracking-widest text-xs mb-3">Mood dial</p>
-                                <h3 className="text-2xl font-display font-black mb-2">Choose your starting feeling</h3>
-                                <p className="text-zinc-400 text-sm mb-4">There is no single correct answer. Music is personal.</p>
+                                <p className="text-sm text-zinc-400 mt-5">Use a university, government health organisation or research journal. Explain the idea in your own words.</p>
+                            </section>
+                            <section className="bg-zinc-900/80 border border-zinc-800 rounded-3xl p-6">
+                                <p className="text-cyan-300 font-bold uppercase tracking-widest text-xs">Mood dial</p>
+                                <h3 className="text-2xl font-display font-black mt-2">Choose a feeling</h3>
+                                <p className="text-zinc-400 text-sm my-4">Use may, might or can—not an absolute claim.</p>
                                 <div className="grid grid-cols-2 gap-2">
                                     {moods.map((item) => (
-                                        <button
-                                            key={item.name}
-                                            onClick={() => setMood(item.name.toLowerCase())}
-                                            className={`p-3 rounded-xl border text-left transition ${mood === item.name.toLowerCase()
-                                                ? `bg-gradient-to-br ${item.colour} border-cyan-300 text-white`
-                                                : 'bg-zinc-800/60 border-zinc-700 text-zinc-300 hover:border-zinc-500'}`}
-                                        >
-                                            <span className="text-xl">{item.icon}</span>
-                                            <span className="block text-sm font-bold mt-1">{item.name}</span>
+                                        <button key={item[0]} onClick={() => setMood(item[0].toLowerCase())} className={'p-3 rounded-xl border text-left ' + (mood === item[0].toLowerCase() ? 'border-cyan-300 bg-cyan-950 text-white' : 'border-zinc-700 bg-zinc-800/60 text-zinc-300')}>
+                                            <span className="text-xl">{item[1]}</span><span className="block text-sm font-bold">{item[0]}</span>
                                         </button>
                                     ))}
                                 </div>
-                                <div className="mt-5 bg-black/40 rounded-2xl p-4 border-l-4 border-pink-500">
-                                    <p className="text-sm text-zinc-300">
-                                        Our team predicts that music may make people feel <strong className="text-pink-300">{mood}</strong>.
-                                    </p>
-                                </div>
-                            </div>
+                            </section>
                         </div>
+                        <section className="bg-zinc-900/80 border border-zinc-800 rounded-3xl p-6">
+                            <p className="text-violet-300 font-bold uppercase tracking-widest text-xs">Team evidence board</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                                <label className="text-sm text-zinc-400">Music or genre<input value={genre} onChange={(e) => setGenre(e.target.value)} placeholder="classical music" className="mt-2 w-full rounded-xl border border-zinc-700 bg-black/40 px-4 py-3 text-white" /></label>
+                                <label className="text-sm text-zinc-400">Source<input value={source} onChange={(e) => setSource(e.target.value)} placeholder="organisation/article" className="mt-2 w-full rounded-xl border border-zinc-700 bg-black/40 px-4 py-3 text-white" /></label>
+                                <label className="text-sm text-zinc-400">One finding<input value={evidence} onChange={(e) => setEvidence(e.target.value)} placeholder="a slower tempo..." className="mt-2 w-full rounded-xl border border-zinc-700 bg-black/40 px-4 py-3 text-white" /></label>
+                                <label className="text-sm text-zinc-400">Example<input value={example} onChange={(e) => setExample(e.target.value)} placeholder="song/situation" className="mt-2 w-full rounded-xl border border-zinc-700 bg-black/40 px-4 py-3 text-white" /></label>
+                            </div>
+                            <div className="mt-5 bg-gradient-to-r from-cyan-950/70 to-violet-950/70 border border-cyan-500/30 rounded-2xl p-5 text-lg">
+                                According to <strong className="text-violet-300">{source || '[source]'}</strong>, <strong className="text-yellow-300">{evidence || '[finding]'}</strong>. Therefore, <strong className="text-cyan-300">{genre || '[music or genre]'}</strong> may make people feel <strong className="text-pink-300">{mood}</strong>. For example, <strong className="text-emerald-300">{example || '[example]'}</strong>.
+                            </div>
+                            <p className="text-sm text-zinc-500 mt-4">Share with one nearby team. They may challenge the claim or add another reaction.</p>
+                        </section>
+                        <div className="mt-8 text-center"><button onClick={onNext} className="bg-pink-600 hover:bg-pink-500 text-white px-10 py-4 rounded-full font-bold text-lg">Next: Artist Scratch Cards →</button></div>
+                    </div>
+                </div>
+            );
+        };
 
-                        <div className="bg-zinc-900/80 border border-zinc-800 rounded-3xl p-6 md:p-8">
-                            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
-                                <div>
-                                    <p className="text-violet-300 font-bold uppercase tracking-widest text-xs">Team evidence board</p>
-                                    <h3 className="text-2xl font-display font-black">Build one evidence-backed claim</h3>
-                                </div>
-                                <span className="text-3xl">🎛️</span>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <label className="text-sm text-zinc-400">
-                                    Music or genre
-                                    <input value={genre} onChange={(event) => setGenre(event.target.value)} placeholder="e.g. classical music" className="mt-2 w-full rounded-xl border border-zinc-700 bg-black/40 px-4 py-3 text-white outline-none focus:border-cyan-400" />
-                                </label>
-                                <label className="text-sm text-zinc-400">
-                                    Research finding
-                                    <input value={evidence} onChange={(event) => setEvidence(event.target.value)} placeholder="e.g. a slower tempo..." className="mt-2 w-full rounded-xl border border-zinc-700 bg-black/40 px-4 py-3 text-white outline-none focus:border-cyan-400" />
-                                </label>
-                                <label className="text-sm text-zinc-400">
-                                    Example song or situation
-                                    <input value={song} onChange={(event) => setSong(event.target.value)} placeholder="e.g. studying / a film scene" className="mt-2 w-full rounded-xl border border-zinc-700 bg-black/40 px-4 py-3 text-white outline-none focus:border-cyan-400" />
-                                </label>
-                            </div>
-                            <div className="mt-5 bg-gradient-to-r from-cyan-950/70 to-violet-950/70 border border-cyan-500/30 rounded-2xl p-5">
-                                <p className="text-sm text-cyan-200 mb-2">Your team claim</p>
-                                <p className="text-lg text-white leading-relaxed">
-                                    We think <strong className="text-cyan-300">{genre || '[music or genre]'}</strong> may make people feel
-                                    <strong className="text-pink-300"> {mood}</strong> because
-                                    <strong className="text-yellow-300"> {evidence || '[research finding]'}</strong>.
-                                    For example, <strong className="text-emerald-300">{song || '[song or situation]'}</strong>.
-                                </p>
-                            </div>
-                            <p className="text-sm text-zinc-500 mt-4">Keep it lean: one source, one finding, one claim. Share your claim with another team. Can they challenge it or add a different perspective?</p>
-                        </div>
+        const ArtistStage = ({ onNext, onBack, onSkip }) => {
+            const core = artistsData.filter((artist) => !artist.bonus);
+            const bonus = artistsData.filter((artist) => artist.bonus);
+            const card = (artist) => (
+                <div key={artist.id} className="flex flex-col items-center">
+                    <div className="bg-zinc-800/50 p-5 rounded-xl border border-zinc-700 w-full mb-5 min-h-[125px] flex items-center justify-center"><p>"{artist.clue}"</p></div>
+                    <ScratchCard artist={artist} />
+                    <div className="mt-4 w-full rounded-xl border border-zinc-700 bg-zinc-900/70 p-4 text-left">
+                        <p className="text-xs font-bold uppercase tracking-widest text-pink-400">After the reveal</p>
+                        <p className="mt-2 text-sm text-white">How is this artist connected with Unit 1?</p>
+                        <details className="mt-3 text-sm text-zinc-400"><summary className="cursor-pointer font-bold text-violet-300">Check the connection</summary><p className="mt-2">{artist.connection}</p></details>
+                    </div>
+                </div>
+            );
+            return (
+                <div className="min-h-screen p-4 md:p-8 pb-24">
+                    <ProgressDock stage={4} onBack={onBack} onSkip={onSkip} />
+                    <div className="max-w-6xl mx-auto fade-in text-center">
+                        <header className="mb-10">
+                            <h4 className="text-pink-500 font-bold tracking-[0.2em] uppercase">Student Book pages 7–8</h4>
+                            <h2 className="text-4xl md:text-5xl font-display font-black mt-2">Who are they?</h2>
+                            <p className="text-zinc-400 mt-4 text-lg">Read the clue, agree on a prediction, scratch to reveal, and explain the Unit 1 connection.</p>
+                        </header>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">{core.map(card)}</div>
+                        <details className="mt-12 rounded-2xl border border-zinc-700 bg-zinc-900/60 p-6 text-left">
+                            <summary className="cursor-pointer text-center text-lg font-bold text-violet-300">Bonus artists if time allows</summary>
+                            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">{bonus.map(card)}</div>
+                        </details>
+                        <div className="mt-12"><button onClick={onNext} className="bg-indigo-600 hover:bg-indigo-500 text-white px-12 py-4 rounded-full font-bold text-lg">Finish with Evidence →</button></div>
+                    </div>
+                </div>
+            );
+        };
 
-                        <div className="mt-10 text-center">
-                            <button
-                                onClick={onNext}
-                                className="bg-pink-600 hover:bg-pink-500 text-white px-10 py-4 rounded-full font-bold text-lg shadow-[0_0_25px_rgba(219,39,119,0.45)] transition-all transform hover:scale-105"
-                            >
-                                Next: Mood DJ Lab <i className="fas fa-arrow-right ml-2"></i>
-                            </button>
+        const ReflectionStage = ({ onBack, onRestart }) => {
+            const [claim, setClaim] = useState('');
+            const [evidence, setEvidence] = useState('');
+            const [different, setDifferent] = useState('');
+            return (
+                <div className="min-h-screen p-4 md:p-8 pb-24">
+                    <ProgressDock stage={5} onBack={onBack} onSkip={() => {}} />
+                    <div className="max-w-4xl mx-auto fade-in rounded-3xl border border-violet-500/40 bg-gradient-to-br from-violet-950/80 via-zinc-950 to-pink-950/70 p-7 md:p-10">
+                        <p className="text-center text-pink-400 font-bold uppercase tracking-[0.25em] text-sm">Exit Ticket · Final Mix</p>
+                        <h2 className="mt-3 text-center text-4xl font-display font-black">Claim + Evidence</h2>
+                        <div className="mt-8 space-y-5">
+                            <label className="block text-sm font-bold text-zinc-300">One way music affects people is...<textarea value={claim} onChange={(e) => setClaim(e.target.value)} className="mt-2 min-h-[85px] w-full rounded-2xl border border-zinc-700 bg-black/40 p-4 text-white" /></label>
+                            <label className="block text-sm font-bold text-zinc-300">One piece of evidence or one example from today is...<textarea value={evidence} onChange={(e) => setEvidence(e.target.value)} className="mt-2 min-h-[85px] w-full rounded-2xl border border-zinc-700 bg-black/40 p-4 text-white" /></label>
+                            <label className="block text-sm font-bold text-zinc-300">Optional: However, the same music may affect people differently because...<textarea value={different} onChange={(e) => setDifferent(e.target.value)} className="mt-2 min-h-[70px] w-full rounded-2xl border border-zinc-700 bg-black/40 p-4 text-white" /></label>
                         </div>
+                        <p className="mt-6 rounded-2xl border border-zinc-700 bg-black/30 p-5 text-zinc-300">A strong response contains a clear idea and specific support. Opinion is the opening act; evidence is the headline performer.</p>
+                        <div className="mt-8 text-center"><button onClick={onRestart} className="rounded-full bg-gradient-to-r from-violet-600 to-pink-600 px-10 py-4 font-bold">Start Again</button></div>
                     </div>
                 </div>
             );
@@ -576,256 +548,94 @@
 
         const App = () => {
             const [isUnlocked, setIsUnlocked] = useState(false);
-            const [stage, setStage] = useState(0); 
+            const [stage, setStage] = useState(0);
             const [answers, setAnswers] = useState({});
-            const [quizSubmitted, setQuizSubmitted] = useState(false);
+            const [predictionsLocked, setPredictionsLocked] = useState(false);
+            const [factflixChecked, setFactflixChecked] = useState(false);
 
-            const handleSelect = (qId, optIndex) => {
-                if (quizSubmitted) return;
-                setAnswers(Object.assign({}, answers, { [qId]: optIndex }));
-            };
+            const goTo = (next) => { setStage(Math.max(0, Math.min(5, next))); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+            const nextStage = () => goTo(stage + 1);
+            const previousStage = () => goTo(stage - 1);
+            const skipStage = () => goTo(stage + 1);
+            const handleSelect = (id, index) => { if (!predictionsLocked) setAnswers(Object.assign({}, answers, { [id]: index })); };
+            const lockPredictions = () => { setPredictionsLocked(true); goTo(2); };
+            const restart = () => { setStage(0); setAnswers({}); setPredictionsLocked(false); setFactflixChecked(false); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
-            const submitQuiz = () => {
-                setQuizSubmitted(true);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            };
+            if (!isUnlocked) return <RiddleGate onSolve={() => setIsUnlocked(true)} />;
 
-            const nextStage = () => {
-                setStage(stage + 1);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            };
-
-            if (!isUnlocked) {
-                return <RiddleGate onSolve={() => setIsUnlocked(true)} />;
-            }
-
-            if (stage === 0) {
-                return (
-                    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-                        <div className="max-w-4xl mx-auto fade-in">
-                            <div className="mb-6 inline-block">
-                                <i className="fas fa-headphones-alt text-6xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500"></i>
-                            </div>
-                            <h3 className="text-sm font-bold tracking-[0.3em] uppercase text-violet-400 mb-4">Unit 1 Introduction</h3>
-                            <h1 className="font-display text-6xl md:text-8xl font-black mb-6 text-white leading-tight">
-                                How is <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">MUSIC</span><br/> a part of our lives?
-                            </h1>
-                            <p className="text-2xl text-zinc-400 mb-12 font-light max-w-2xl mx-auto">
-                                Before we watch the Factflix video, let's test your instincts. What does music actually do to your brain?
-                            </p>
-                            <button 
-                                onClick={nextStage}
-                                className="group relative inline-flex items-center justify-center px-10 py-5 font-bold text-white transition-all duration-200 bg-zinc-900 border-2 border-violet-500 rounded-full hover:bg-violet-600 focus:outline-none shadow-[0_0_30px_rgba(139,92,246,0.3)] hover:shadow-[0_0_40px_rgba(139,92,246,0.6)] hover:-translate-y-1"
-                            >
-                                <span className="mr-3 text-xl tracking-wider font-display uppercase">Start the Quiz</span>
-                                <i className="fas fa-play transform group-hover:scale-110 transition-transform text-pink-400 group-hover:text-white"></i>
-                            </button>
+            if (stage === 0) return (
+                <div className="min-h-screen p-4 md:p-8">
+                    <ProgressDock stage={0} onBack={previousStage} onSkip={skipStage} />
+                    <div className="min-h-[75vh] flex items-center justify-center text-center">
+                        <div className="max-w-4xl fade-in">
+                            <i className="fas fa-headphones-alt text-6xl text-violet-400"></i>
+                            <h3 className="text-sm font-bold tracking-[0.3em] uppercase text-violet-400 mt-5">Unit 1 Introduction</h3>
+                            <h1 className="font-display text-6xl md:text-8xl font-black my-6">How is <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">MUSIC</span><br/>a part of our lives?</h1>
+                            <p className="text-2xl text-zinc-400 mb-10">Test your instincts, listen for evidence, and see which predictions survive Factflix.</p>
+                            <button onClick={nextStage} className="px-10 py-5 font-bold text-white bg-zinc-900 border-2 border-violet-500 rounded-full hover:bg-violet-600">Make Predictions →</button>
                         </div>
                     </div>
-                );
-            }
+                </div>
+            );
 
-            if (stage === 1) {
-                return (
-                    <div className="min-h-screen p-6 md:p-12 pb-24">
-                        <div className="max-w-5xl mx-auto fade-in">
-                            <header className="flex justify-between items-end mb-10 border-b border-zinc-800 pb-6">
-                                <div>
-                                    <h2 className="text-4xl font-display font-black text-white">The Music in Our Lives</h2>
-                                    <p className="text-zinc-400 mt-2 text-lg">Activity 2: Work in pairs to do the quiz. Which questions are hard to answer?</p>
+            if (stage === 1) return (
+                <div className="min-h-screen p-4 md:p-8 pb-24">
+                    <ProgressDock stage={1} onBack={previousStage} onSkip={skipStage} />
+                    <div className="max-w-5xl mx-auto fade-in">
+                        <header className="mb-8 border-b border-zinc-800 pb-6">
+                            <p className="text-violet-300 font-bold uppercase tracking-widest text-xs">Prediction round</p>
+                            <h2 className="text-4xl font-display font-black mt-2">The Music in Our Lives</h2>
+                            <p className="text-zinc-400 mt-2 text-lg">Work in pairs. Choose answers, but do not check them yet—the video is your evidence.</p>
+                        </header>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            {quizData.map((q) => (
+                                <div key={q.id} className="bg-zinc-900/80 border border-zinc-800 p-5 rounded-2xl">
+                                    <p className="text-lg font-medium mb-4"><span className="text-pink-500 font-black mr-2">{q.id}.</span>{q.q}</p>
+                                    <div className="space-y-2">{q.options.map((opt, index) => <button key={index} onClick={() => handleSelect(q.id, index)} className={'w-full text-left p-3 rounded-xl border ' + (answers[q.id] === index ? 'bg-violet-900/60 border-violet-400' : 'bg-zinc-800/50 border-zinc-700')}><span className="inline-block w-6 opacity-50">{['a','b','c'][index]})</span>{opt.text}</button>)}</div>
                                 </div>
-                                <div className="hidden md:block">
-                                    <span className="bg-violet-900/50 text-violet-300 py-1 px-4 rounded-full text-sm font-bold border border-violet-500/30">Phase 1 of 3</span>
-                                </div>
-                            </header>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 slide-up">
-                                {quizData.map((q, qIndex) => (
-                                    <div key={q.id} className="bg-zinc-900/80 border border-zinc-800 p-6 rounded-2xl shadow-xl hover:border-zinc-700 transition-colors">
-                                        <p className="text-xl font-medium text-white mb-6">
-                                            <span className="text-pink-500 font-black mr-2">{q.id}.</span> {q.q}
-                                        </p>
-                                        <div className="space-y-3">
-                                            {q.options.map((opt, oIndex) => {
-                                                const isSelected = answers[q.id] === oIndex;
-                                                let btnClass = "w-full text-left p-4 rounded-xl border transition-all duration-200 font-medium ";
-                                                
-                                                if (quizSubmitted) {
-                                                    if (opt.isCorrect) {
-                                                        btnClass += "bg-emerald-900/40 border-emerald-500 text-emerald-300";
-                                                    } else if (isSelected && !opt.isCorrect) {
-                                                        btnClass += "bg-rose-900/40 border-rose-500 text-rose-300 opacity-60";
-                                                    } else {
-                                                        btnClass += "bg-zinc-900/50 border-zinc-800 text-zinc-500 opacity-50";
-                                                    }
-                                                } else {
-                                                    btnClass += isSelected 
-                                                        ? "bg-violet-900/60 border-violet-400 text-white shadow-[0_0_15px_rgba(139,92,246,0.3)] transform scale-[1.02]" 
-                                                        : "bg-zinc-800/50 border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:border-zinc-500";
-                                                }
-
-                                                return (
-                                                    <button 
-                                                        key={oIndex}
-                                                        onClick={() => handleSelect(q.id, oIndex)}
-                                                        disabled={quizSubmitted}
-                                                        className={btnClass}
-                                                    >
-                                                        <span className="inline-block w-6 font-bold opacity-50">{['a', 'b', 'c'][oIndex]})</span> {opt.text}
-                                                        {quizSubmitted && opt.isCorrect && <i className="fas fa-check-circle float-right mt-1 text-emerald-400"></i>}
-                                                        {quizSubmitted && isSelected && !opt.isCorrect && <i className="fas fa-times-circle float-right mt-1 text-rose-400"></i>}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                        
-                                        {quizSubmitted && (
-                                            <div className="mt-6 p-4 bg-black/50 rounded-lg border-l-4 border-indigo-500 animate-fade-in text-sm text-zinc-300">
-                                                <i className="fas fa-info-circle text-indigo-400 mr-2"></i>
-                                                <span className="font-semibold text-white">Factflix says:</span> {q.fact}
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="mt-12 text-center slide-up delay-2">
-                                {!quizSubmitted ? (
-                                    <button 
-                                        onClick={submitQuiz}
-                                        disabled={Object.keys(answers).length < quizData.length}
-                                        className={`px-12 py-4 rounded-full font-bold text-lg transition-all ${
-                                            Object.keys(answers).length === quizData.length
-                                            ? 'bg-pink-600 hover:bg-pink-500 text-white shadow-[0_0_20px_rgba(219,39,119,0.5)]'
-                                            : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
-                                        }`}
-                                    >
-                                        Reveal Factflix Answers
-                                    </button>
-                                ) : (
-                                    <button 
-                                        onClick={nextStage}
-                                        className="bg-indigo-600 hover:bg-indigo-500 text-white px-12 py-4 rounded-full font-bold text-lg shadow-[0_0_20px_rgba(79,70,229,0.5)] transition-all transform hover:scale-105"
-                                    >
-                                        Continue to Video Discussion <i className="fas fa-arrow-right ml-2"></i>
-                                    </button>
-                                )}
-                            </div>
+                            ))}
+                        </div>
+                        <div className="mt-10 text-center">
+                            <button onClick={lockPredictions} disabled={Object.keys(answers).length < quizData.length} className={'px-10 py-4 rounded-full font-bold text-lg ' + (Object.keys(answers).length === quizData.length ? 'bg-pink-600 text-white' : 'bg-zinc-800 text-zinc-500 cursor-not-allowed')}>Lock Predictions & Watch Factflix</button>
+                            <p className="mt-3 text-sm text-zinc-500">Correct answers remain hidden until after the video.</p>
                         </div>
                     </div>
-                );
-            }
+                </div>
+            );
 
-            if (stage === 2) {
-                return (
-                    <div className="min-h-screen p-6 md:p-12 flex items-center">
-                        <div className="max-w-6xl mx-auto w-full fade-in">
-                            
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                                {/* Left Column: Video Simulation */}
-                                <div className="order-2 lg:order-1 slide-up">
-                                    <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-zinc-700 bg-black aspect-video flex flex-col items-center justify-center group cursor-pointer">
-                                        <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900/40 to-pink-900/40 mix-blend-overlay"></div>
-                                        <i className="fas fa-play-circle text-7xl text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"></i>
-                                        <p className="absolute bottom-6 left-6 font-display font-bold text-2xl z-10"><span className="text-red-500">FACT</span>FLIX: Music in Daily Life</p>
-                                    </div>
-                                    
-                                    <div className="mt-8 bg-zinc-900 p-6 rounded-xl border border-zinc-800">
-                                        <h4 className="text-pink-400 font-bold uppercase tracking-widest text-sm mb-3"><i className="fas fa-search mr-2"></i>Video Task</h4>
-                                        <p className="text-lg text-white font-medium">How many hours does the average teenager listen to music each day? <span className="text-zinc-400 italic font-normal">What about you?</span></p>
-                                    </div>
-                                </div>
-
-                                {/* Right Column: Speaking Task & Key Phrases */}
-                                <div className="order-1 lg:order-2 slide-up delay-1">
-                                    <h2 className="text-4xl font-display font-black mb-6">Let's Discuss</h2>
-                                    
-                                    <div className="space-y-4 mb-10">
-                                        <div className="bg-zinc-800/50 p-4 rounded-lg border-l-4 border-indigo-500">
-                                            <p className="text-white">1. What music do you usually listen to? What genres / artists?</p>
-                                        </div>
-                                        <div className="bg-zinc-800/50 p-4 rounded-lg border-l-4 border-indigo-500">
-                                            <p className="text-white">2. Where and when do you listen to it?</p>
-                                        </div>
-                                        <div className="bg-zinc-800/50 p-4 rounded-lg border-l-4 border-indigo-500">
-                                            <p className="text-white">3. What impact does the music have on you?</p>
-                                        </div>
-                                        <div className="bg-zinc-800/50 p-4 rounded-lg border-l-4 border-indigo-500">
-                                            <p className="text-white">4. Do you think you will listen to the same music in five years' time?</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="bg-gradient-to-br from-violet-900/40 to-black p-6 rounded-2xl border border-violet-500/30">
-                                        <h4 className="text-violet-300 font-bold uppercase tracking-widest text-sm mb-4"><i className="fas fa-comment-dots mr-2"></i>Key Phrases</h4>
-                                        <ul className="space-y-3 font-mono text-sm md:text-base text-zinc-300">
-                                            <li><span className="text-pink-400 font-bold">➜</span> I'm (not) into...</li>
-                                            <li><span className="text-pink-400 font-bold">➜</span> It makes me feel...</li>
-                                            <li><span className="text-pink-400 font-bold">➜</span> ... is good music for...</li>
-                                            <li><span className="text-pink-400 font-bold">➜</span> My taste in music is/will...</li>
-                                            <li><span className="text-pink-400 font-bold">➜</span> It sounds (like)...</li>
-                                        </ul>
-                                    </div>
-                                    
-                                    <div className="mt-8 text-right">
-                                        <button 
-                                            onClick={nextStage}
-                                            className="text-zinc-400 hover:text-white transition-colors uppercase tracking-widest text-sm font-bold"
-                                        >
-                                            Next: Guess the Artist &rarr;
-                                        </button>
-                                    </div>
-                                </div>
+            if (stage === 2) return (
+                <div className="min-h-screen p-4 md:p-8 pb-24">
+                    <ProgressDock stage={2} onBack={previousStage} onSkip={skipStage} />
+                    <div className="max-w-6xl mx-auto fade-in">
+                        <header className="mb-8 text-center">
+                            <p className="text-red-400 font-bold uppercase tracking-[0.25em] text-xs">Factflix viewing mission</p>
+                            <h2 className="mt-2 text-4xl md:text-5xl font-display font-black">Listen for evidence</h2>
+                            <p className="mx-auto mt-4 max-w-3xl text-zinc-300 text-lg">Your teacher will switch to the Factflix tab. Jot down an answer only when you hear evidence. The answers may not appear in question order.</p>
+                        </header>
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                            <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {quizData.map((q) => <div key={q.id} className="rounded-2xl border border-zinc-700 bg-zinc-900/80 p-4"><p className="text-xs font-black uppercase tracking-widest text-violet-300">Question {q.id}</p><p className="mt-2 text-sm">{q.q}</p><p className="mt-3 text-xs text-zinc-500">Prediction: <span className="text-zinc-300">{q.options[answers[q.id]] ? q.options[answers[q.id]].text : 'No answer'}</span></p></div>)}
                             </div>
+                            <aside className="rounded-3xl border border-pink-500/30 bg-gradient-to-br from-pink-950/70 to-zinc-950 p-6">
+                                <div className="text-5xl">📝</div><h3 className="mt-4 text-2xl font-display font-black">Note-taking rule</h3>
+                                <p className="mt-3 text-zinc-300">Write keywords only when the video supplies evidence. Leave a question blank if you do not hear its answer.</p>
+                                <div className="mt-5 rounded-2xl border border-zinc-700 bg-black/30 p-4"><p className="text-sm font-bold text-pink-300">Extra question</p><p className="mt-2 text-sm">How many hours does the average teenager listen to music each day?</p></div>
+                            </aside>
                         </div>
+                        {!factflixChecked ? <div className="mt-10 text-center"><button onClick={() => setFactflixChecked(true)} className="rounded-full bg-emerald-600 px-10 py-4 text-lg font-bold">We Have Watched — Check Predictions</button></div> :
+                        <div className="mt-10">
+                            <h3 className="text-center text-3xl font-display font-black">What did Factflix confirm?</h3>
+                            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">{quizData.map((q) => { const correctIndex = q.options.findIndex((option) => option.isCorrect); const correct = answers[q.id] === correctIndex; return <div key={q.id} className={'rounded-2xl border p-5 ' + (correct ? 'border-emerald-500/50 bg-emerald-950/40' : 'border-amber-500/50 bg-amber-950/30')}><p className="font-bold">{correct ? '✓ Prediction confirmed' : '↻ Prediction revised'}</p><p className="mt-2 text-sm"><strong>Answer:</strong> {q.options[correctIndex].text}</p><p className="mt-2 text-xs text-zinc-400">{q.fact}</p></div>; })}</div>
+                            <div className="mt-6 rounded-2xl border border-violet-500/30 bg-violet-950/30 p-5"><strong className="text-violet-200">Quick pair talk:</strong><p className="mt-2 text-zinc-300">Which answer surprised you? What impact does your music have on you?</p><p className="mt-3 text-sm text-zinc-500">“I’m into…” · “It makes me feel…” · “…is good music for…”</p></div>
+                            <div className="mt-8 text-center"><button onClick={nextStage} className="rounded-full bg-indigo-600 px-10 py-4 text-lg font-bold">Next: Soundtrack Scientists →</button></div>
+                        </div>}
                     </div>
-                );
-            }
+                </div>
+            );
 
-            if (stage === 3) {
-                return <EmotionLab onNext={nextStage} />;
-            }
-
-            if (stage === 4) {
-                return (
-                    <div className="min-h-screen p-6 md:p-12 pb-24 flex items-center justify-center">
-                        <div className="max-w-6xl mx-auto w-full fade-in text-center">
-                            <header className="mb-12">
-                                <h4 className="text-pink-500 font-bold tracking-[0.2em] uppercase mb-2">Phase 4: Music Trends</h4>
-                                <h2 className="text-4xl md:text-5xl font-display font-black text-white">Who are they?</h2>
-                                <p className="text-zinc-400 mt-4 text-lg max-w-2xl mx-auto">
-                                    We are about to read about some famous musicians in our Student Book. Read the clues below and <strong className="text-white">scratch off the cards</strong> to reveal who they are!
-                                </p>
-                            </header>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 slide-up delay-1">
-                                {artistsData.map((artist) => (
-                                    <div key={artist.id} className="flex flex-col items-center">
-                                        <div className="bg-zinc-800/50 p-6 rounded-xl border border-zinc-700 w-full mb-6 min-h-[140px] flex items-center justify-center shadow-lg">
-                                            <p className="text-white font-medium text-base md:text-lg leading-relaxed">"{artist.clue}"</p>
-                                        </div>
-                                        <ScratchCard artist={artist} />
-                                    </div>
-                                ))}
-                            </div>
-
-                                    <div className="mt-16 text-center slide-up delay-2">
-                                        <button 
-                                            onClick={() => {
-                                                setStage(0);
-                                                setAnswers({});
-                                                setQuizSubmitted(false);
-                                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                                            }}
-                                            className="bg-indigo-600 hover:bg-indigo-500 text-white px-12 py-4 rounded-full font-bold text-lg shadow-[0_0_20px_rgba(79,70,229,0.5)] transition-all transform hover:scale-105"
-                                        >
-                                            Start Again <i className="fas fa-redo ml-2"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                        </div>
-                );
-            }
-
+            if (stage === 3) return <EmotionLab onNext={nextStage} onBack={previousStage} onSkip={skipStage} />;
+            if (stage === 4) return <ArtistStage onNext={nextStage} onBack={previousStage} onSkip={skipStage} />;
+            if (stage === 5) return <ReflectionStage onBack={previousStage} onRestart={restart} />;
             return null;
         };
 
