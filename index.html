@@ -136,6 +136,7 @@
         const { useState, useEffect, useRef } = React;
 
         const STORAGE_PREFIX = 'df4-unit1-intro:v1:';
+        const isTeacherPassword = (value) => ['BACKSTAGE', 'EVIDENCE'].includes(String(value).trim().toUpperCase());
 
         const usePersistentState = (name, initialValue) => {
             const key = STORAGE_PREFIX + name;
@@ -589,7 +590,7 @@
 
             const unlockTeacherBoard = (event) => {
                 event.preventDefault();
-                if (teacherPassword.trim().toUpperCase() === 'BACKSTAGE') {
+                if (isTeacherPassword(teacherPassword)) {
                     setTeacherUnlocked(true);
                     setShowTeacherPassword(false);
                     setTeacherPassword('');
@@ -762,7 +763,7 @@
             const lockPredictions = () => { setPredictionsLocked(true); goTo(2); };
             const unlockFactflixAnswers = (event) => {
                 event.preventDefault();
-                if (factflixPassword.trim().toUpperCase() === 'EVIDENCE') {
+                if (isTeacherPassword(factflixPassword)) {
                     setFactflixChecked(true);
                     setShowFactflixPassword(false);
                     setFactflixPassword('');
